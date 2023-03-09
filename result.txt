@@ -1,0 +1,11 @@
+> test failed! Expected 144 but was -92
+
+
+> Result:
+seq_a was incorrect
+our seq_a:	-----------------------------------------------------------------------------YEWVTRVRMRTCCSSCKKGRIPLWRCSMHHDVKFVHPQKMMMSPFWNFCIQEMQAIAQPNEVWYRHAWCDPVDFH
+correct seq_a:	YHFDVPDCWAHRYWVENPQAIAQME-------QICFNWFPSMMMK-------QPHVFKV---DHHMSCRWLPIRGKKCSSCCTRMRVRTVWE
+seq_b was incorrect
+our seq_b	YHEDVAHEDAIAQMVNTFGFVWQICLNQFPSMMMKIYWIAVLSAHVADRKTWSKHMSCRWLPIISATCARMRVRTVWE--------------------------------------------------------------------------
+correct seq_b	YHEDV----AHE------DAIAQMVNTFGFVWQICLNQFPSMMMKIYWIAVLSAHVADRKTWSKHMSCRWLPI----ISATCARMRVRTVWE
+> test failed!
