@@ -21,34 +21,34 @@ def test_score(file, correct_score):
     score = global_alignment_score(file)
     if score == correct_score:
         print_green()
-        print("> test ok!")
+        print("> score test:\t\t[OK]")
     else:
+        print(f"Expected {correct_score} but was {score}")
         print_red()
-        print(f"> test failed! Expected {correct_score} but was {score}")
+        print(f"> score test:\t\t[failed]")
     print_normal()
-    print()
 
 
 def test_sequences(file, correct_sequences):
     seq_a, seq_b = global_alignment(file)
-
-    print()
-    print("> Result:")
     if seq_a != correct_sequences[0]:
-        print(f"seq_a was incorrect")
-        print(f"our seq_a:\t{seq_a}")
-        print(f"correct seq_a:\t{correct_sequences[0]}")
+        print(f"seq_a failed:")
+    else:
+        print(f"seq_a ok:")
+    print(f"\tour seq_a:\t{seq_a}")
+    print(f"\tcorrect seq_a:\t{correct_sequences[0]}")
     if seq_b != correct_sequences[1]:
-        print(f"seq_b was incorrect")
-        print(f"our seq_b\t{seq_b}")
-        print(f"correct seq_b\t{correct_sequences[1]}")
-
+        print(f"seq_b failed:")
+    else:
+        print(f"seq_b ok:")
+    print(f"\tour seq_b\t{seq_b}")
+    print(f"\tcorrect seq_b\t{correct_sequences[1]}")
     if seq_a == correct_sequences[0] and seq_b == correct_sequences[1]:
         print_green()
-        print("> test ok!")
+        print("> sequence test\t\t[OK]")
     else:
         print_red()
-        print("> test failed!")
+        print("> sequence test\t\t[failed]")
     print_normal()
 
 # Tests
@@ -72,14 +72,16 @@ def test_fasta_02():
     # Test sequences
     correct_sequences = [
         'YHFDVPDCWAHRYWVENPQAIAQME-------QICFNWFPSMMMK-------QPHVFKV---DHHMSCRWLPIRGKKCSSCCTRMRVRTVWE',
-        'YHEDV----AHE------DAIAQMVNTFGFVWQICLNQFPSMMMKIYWIAVLSAHVADRKTWSKHMSCRWLPI----ISATCARMRVRTVWE',
+        'YHEDV----AHE------DAIAQMVNTFGFVWQICLNQFPSMMMKIYWIAVLSAHVADRKTWSKHMSCRWLPI----ISATCARMRVRTVWE'
     ]
     test_sequences(file, correct_sequences)
 
 
+def test_fasta_06():
+    file = "./resources/data06.faa"
 
-
-
+    # Test score
+    test_score(file, 1184)
 
 
 
