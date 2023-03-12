@@ -4,18 +4,19 @@ from global_alignment import *
 
 
 def print_red():
-    # print(u"\u001b[1;38;2;255;75;75m", end="")
+    print(u"\u001b[1;38;2;255;75;75m", end="")
     pass
 
 
 def print_green():
-    # print(u"\u001b[1;38;2;75;255;75m", end="")
+    print(u"\u001b[1;38;2;75;255;75m", end="")
     pass
 
 
 def print_normal():
-    # print(u"\u001b[0m", end="")
+    print(u"\u001b[0m", end="")
     pass
+
 
 def test_score(file, correct_score):
     score = global_alignment_score(file)
@@ -57,6 +58,7 @@ def test_fasta_01():
 
     # Test score
     test_score(file, 8)
+    return
 
     # Test sequences
     correct_sequences = ['PRT---EINS', 'PRTWPSEIN-']

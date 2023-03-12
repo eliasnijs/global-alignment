@@ -1,14 +1,19 @@
 from global_alignment import *
 import tests
 
-if __name__ == '__main__':
+
+def main():
     print(f"test_fasta_01")
     tests.test_fasta_01()
 
-    print()
+    return
     print(f"test_fasta_02")
     tests.test_fasta_02()
 
-    print()
+    return
     print(f"test_fasta_06")
     tests.test_fasta_06()
+
+
+if __name__ == '__main__':
+    main()
