@@ -5,11 +5,11 @@ from Bio.Align import substitution_matrices
 
 def print_matrix(matrix: np.ndarray, seq_a: np.ndarray, seq_b: np.ndarray, pos: list[tuple[int, int]]) -> None:
     height, width, _ = matrix.shape
-    for j in range(width - 1):
+    for j in range(width):
         print(f" {seq_a[j - 1] if j > 0 else '   '} ", end="                   ")
     print(f"")
     for i in range(height):
-        print(f" {seq_b[i - 1] if 0 < i < height - 1 else ' '} ", end="")
+        print(f" {seq_b[i - 1] if 0 < i < height else ' '} ", end="")
         for j in range(width):
             if (i, j) in pos:
                 print(u"\u001b[1;38;2;255;255;75m", end="")
@@ -28,22 +28,25 @@ def parse_fasta_file(fasta_file_path: str) -> tuple[np.ndarray, np.ndarray]:
     return np.array(records[0].seq), np.array(records[1].seq)
 
 
-H = -11  # Gap opening penalty
-G = -1  # Gap extension penalty
+H = -11  # gap opening penalty
+G = -1  # gap extension penalty
 S = substitution_matrices.load("BLOSUM62")  # scoring matrix
 
 
 def construct_matrix(seq_a: np.ndarray, seq_b: np.ndarray) -> np.array:
     # Initialise Matrix
     m = np.zeros((seq_b.size + 1, seq_a.size + 1, 3))
-    m[0][0] = [0, H, H]
-    for i_a in range(1, seq_a.size + 1):
-        m[0][i_a] = [-np.inf, -np.inf, H + i_a * G]
-    for i_b in range(1, seq_b.size + 1):
-        m[i_b][0] = [-np.inf, H + i_b * G, -np.inf]
+    for i_a in range(0, seq_a.size + 1):
+        m[0][i_a] = [i_a * H, i_a * H, i_a * H]
+    for i_b in range(0, seq_b.size + 1):
+        m[i_b][0] = [i_b * H, i_b * H, i_b * H]
 
     # Construct matrix
-    print_matrix(m, seq_a, seq_b, [])
+    for i in range(1, seq_b.size + 1):
+        for j in range(1, seq_a.size + 1):
+            m[i][j][1] = max(m[i - 1][j][1] + G, m[i - 1][j][0] + H)
+            m[i][j][2] = max(m[i][j - 1][2] + G, m[i][j - 1][0] + H)
+            m[i][j][0] = max(m[i][j][1], m[i][j][2], m[i - 1][j - 1][0] + S[seq_a[j - 1]][seq_b[i - 1]])
 
     # Return matrix
     return m
@@ -52,30 +55,10 @@ def construct_matrix(seq_a: np.ndarray, seq_b: np.ndarray) -> np.array:
 def global_alignment_score(fasta_file_path: str) -> int:
     seq_a, seq_b = parse_fasta_file(fasta_file_path)
     m = construct_matrix(seq_a, seq_b)
-    print(m[-1][-1])
     return int(np.amax(m[-1][-1]))
 
 
 def global_alignment(fasta_file_path: str) -> tuple[str, str]:
-    dirs = np.array([[-1, -1], [0, -1], [-1, 0]])  # Directions in traceback
+    return '', ''
 
-    seq_a, seq_b = parse_fasta_file(fasta_file_path)
-    m = construct_matrix(seq_a, seq_b)
 
-    seq_a_aligned = []
-    seq_b_aligned = []
-
-    # Initialise traceback
-    i = m.shape[0] - 1
-    j = m.shape[1] - 1
-
-    # Traceback
-    while i > 1 or j > 1:
-        i_dirs = np.argmax([m[i - 1][j - 1][0], m[i - 1][j][2], m[i][j - 1][1]])
-        i += dirs[i_dirs][0]
-        j += dirs[i_dirs][1]
-        seq_a_aligned.append('-' if i_dirs == 2 else seq_a[j - 1])
-        seq_b_aligned.append('-' if i_dirs == 1 else seq_b[i - 1])
-
-    # Return aligned sequences
-    return ''.join(np.flip(seq_a_aligned)), ''.join(np.flip(seq_b_aligned))

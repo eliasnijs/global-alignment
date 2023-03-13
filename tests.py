@@ -58,7 +58,6 @@ def test_fasta_01():
 
     # Test score
     test_score(file, 8)
-    return
 
     # Test sequences
     correct_sequences = ['PRT---EINS', 'PRTWPSEIN-']
@@ -86,10 +85,24 @@ def test_fasta_06():
     test_score(file, 1184)
 
 
+def test_fasta_08():
+    file = "./resources/data08.faa"
+
+    # Test score
+    test_score(file, 319)
 
 
+def test_fasta_12():
+    file = "./resources/data12.faa"
 
+    # Test score
+    test_score(file, 466)
 
+def test_fasta_17():
+    file = "./resources/data17.faa"
+
+    # Test score
+    test_score(file, 0)
 
 
 
