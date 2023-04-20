@@ -1,4 +1,5 @@
 import tests
+from global_alignment import *
 
 
 def main():
@@ -7,8 +8,6 @@ def main():
     print(f"//// test_fasta_01")
     print()
     tests.test_fasta_01()
-
-    return
 
     print()
     print(f"////////////////////////////////////////")
